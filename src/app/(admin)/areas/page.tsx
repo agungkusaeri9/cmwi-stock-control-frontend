@@ -73,7 +73,7 @@ function AreaListPage() {
             <Breadcrumb items={[{ label: 'Dashboard', href: '/dashboard' }, { label: 'Areas', href: '/areas' }]} />
             <div className="space-y-6">
                 <div className="flex justify-end mb-4">
-                    <ButtonLink size='xs' href="/areas/create">Create Area</ButtonLink>
+                    <ButtonLink size='sm' href="/areas/create">Create Area</ButtonLink>
                 </div>
                 <DataTable
                     title="Area List"

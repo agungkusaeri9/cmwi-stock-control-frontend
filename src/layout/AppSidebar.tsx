@@ -20,6 +20,8 @@ import { getCookie } from "cookies-next";
 import { useQuery } from "@tanstack/react-query";
 import ReminderService from "@/services/ReminderService";
 import KanbanService from "@/services/KanbanService";
+import KanbanStagingService from "@/services/KanbanStagingService";
+import { KanbanIcon } from "lucide-react";
 type NavItem = {
   name: string;
   icon: React.ReactNode;
@@ -53,6 +55,7 @@ const AppSidebar: React.FC = () => {
   const { isExpanded, isMobileOpen, isHovered, setIsHovered } = useSidebar();
   const pathname = usePathname();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [menuKanbanCount, setMenuKanbanCount] = useState(0);
   const { data: remindersCount } = useQuery({
     queryKey: ["reminders-count"],
     queryFn: ReminderService.getCount,
@@ -64,12 +67,29 @@ const AppSidebar: React.FC = () => {
     queryKey: ["uncompleted-kanbans-count"],
     queryFn: async () => {
       const response = await KanbanService.getUncompletedCount();
-      return response.pagination.total;
+      const total = response.pagination.total;
+      return total;
     },
     staleTime: 240000,
     gcTime: 360000,
     refetchInterval: 300000,
   });
+
+  const { data: kanbanStagingCount } = useQuery({
+    queryKey: ["kanban-staging-count"],
+    queryFn: async () => {
+      const response = await KanbanStagingService.get();
+      const total = response.pagination.total;
+      return total;
+    },
+    staleTime: 240000,
+    gcTime: 360000,
+    refetchInterval: 300000,
+  });
+
+  useEffect(() => {
+    setMenuKanbanCount(uncompletedKanbansCount + kanbanStagingCount);
+  }, [uncompletedKanbansCount, kanbanStagingCount]);
 
 
   const navItems: NavItem[] = [
@@ -116,6 +136,18 @@ const AppSidebar: React.FC = () => {
       requiresAuth: false
     },
     {
+      icon: <KanbanIcon />,
+      name: "Kanban",
+      subItems: [
+        { name: "Kanban", path: "/kanbans", pro: false, count: (uncompletedKanbansCount ?? 0) > 0 ? uncompletedKanbansCount : undefined },
+        {
+          name: "Kanban Staging", path: "/kanban-stagings", pro: false, count: (kanbanStagingCount ?? 0) > 0 ? kanbanStagingCount : undefined,
+        },
+      ],
+      count: menuKanbanCount > 0 ? menuKanbanCount : undefined,
+      requiresAuth: true
+    },
+    {
       icon: <DatabaseIcon />,
       name: "Master Data",
       subItems: [
@@ -123,19 +155,12 @@ const AppSidebar: React.FC = () => {
         { name: "Area", path: "/areas", pro: false },
         { name: "Machine", path: "/machines", pro: false },
         { name: "Rack", path: "/racks", pro: false },
-        {
-          name: "Kanban",
-          path: "/kanbans",
-          pro: false,
-          count: uncompletedKanbansCount
-        },
         { name: "Makers", path: "/makers", pro: false },
         { name: "Suppliers", path: "/suppliers", pro: false },
         { name: "Group", path: "/groups", pro: false },
         { name: "Requester", path: "/requesters", pro: false },
 
       ],
-      count: uncompletedKanbansCount,
       requiresAuth: true
     },
     {

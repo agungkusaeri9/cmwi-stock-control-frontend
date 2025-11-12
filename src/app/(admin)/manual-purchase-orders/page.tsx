@@ -1,9 +1,7 @@
 "use client"
 import React, { Suspense, useState } from "react";
 import PageBreadcrumb from "@/components/common/PageBreadCrumb";
-import PurchaseOrderService from "@/services/PurchaseOrderService";
 import ButtonLink from "@/components/ui/button/ButtonLink";
-import { useFetchDataPurchaseOrder } from "@/hooks/useFetchDataPO";
 import { dateFormat } from "@/utils/dateFormat";
 import DataTable from "@/components/common/DataTable";
 import { PurchaseOrder } from "@/types/purchaseOrder";
@@ -86,7 +84,7 @@ function PoList() {
             <PageBreadcrumb pageTitle="Manual Purchase Order" />
             <div className="space-y-6">
                 <div className="flex justify-end mb-4">
-                    <ButtonLink size='xs' href="/manual-purchase-orders/create">Create Manual PO</ButtonLink>
+                    <ButtonLink size='sm' href="/manual-purchase-orders/create">Create Manual PO</ButtonLink>
                 </div>
                 <DataTable
                     title="Manual Purchase Order History"

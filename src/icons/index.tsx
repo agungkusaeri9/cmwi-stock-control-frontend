@@ -58,6 +58,8 @@ import DatabaseIcon from "./database.svg";
 import ReminderIcon from "./reminder.svg";
 import BalanceIcon from "./balance.svg";
 import TrashIcon from "./trash.svg";
+import KanbanIcon from "./kanban.svg";
+
 
 
 export {
@@ -120,5 +122,6 @@ export {
   ChatIcon,
   PurchaseOrderIcon,
   PurchaseRequestIcon,
-  TrashIcon
+  TrashIcon,
+  KanbanIcon
 };

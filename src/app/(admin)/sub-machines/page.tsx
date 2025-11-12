@@ -108,7 +108,7 @@ function SubMachineList() {
             <Breadcrumb items={[{ label: 'Dashboard', href: '/dashboard' }, { label: 'Machines', href: '/machines' }, { label: 'Sub Machines', href: '/sub-machines' }]} />
             <div className="space-y-6">
                 <div className="flex justify-end mb-4">
-                    <ButtonLink size='xs' href={`/sub-machines/create?machineId=${machineId}`}>Create Sub Machine</ButtonLink>
+                    <ButtonLink size='sm' href={`/sub-machines/create?machineId=${machineId}`}>Create Sub Machine</ButtonLink>
                 </div>
                 <DataTable
                     title="Sub Machine List"

@@ -13,7 +13,7 @@ interface FormSelect2Props {
     name: string;
     options?: Option[];
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    control: Control<any>;
+    control?: Control<any>;
     placeholder?: string;
     isMulti?: boolean;
     isClearable?: boolean;

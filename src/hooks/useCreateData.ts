@@ -17,7 +17,13 @@ export const useCreateData = <TForm, TResponse>(
     },
     onSuccess: (response) => {
       toast.success((response as { message: string }).message || "Data berhasil ditambahkan.");
-      queryClient.invalidateQueries({ queryKey });
+      // const queryKeys = queryKey.map((key) => [key]);
+      queryKey.forEach((key) => {
+        queryClient.invalidateQueries({
+          queryKey: [key],
+          refetchType: "active",
+        });
+      });
       router.push(redirectUrl);
     },
     onError: (error: unknown) => {

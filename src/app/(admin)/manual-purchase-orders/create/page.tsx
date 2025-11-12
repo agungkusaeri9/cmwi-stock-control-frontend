@@ -3,7 +3,6 @@ import Breadcrumb from '@/components/common/Breadcrumb'
 import ComponentCard from '@/components/common/ComponentCard'
 import DatePicker from '@/components/form/datePicker';
 import InputLabel from '@/components/form/FormInput';
-import SelectLabel from '@/components/form/FormSelect';
 import FormSelect2 from '@/components/form/FormSelect2';
 import TextAreaLabel from '@/components/form/FormTextArea';
 import Button from '@/components/ui/button/Button';

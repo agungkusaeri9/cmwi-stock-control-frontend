@@ -99,7 +99,7 @@ const create = async (data: FromData) => {
     }
 };
 
-const getById = async (id: number) => {
+const getById =  async (id: number) => {
     try {
         const response = await api.get(`kanbans/${id}`);
         return response.data;

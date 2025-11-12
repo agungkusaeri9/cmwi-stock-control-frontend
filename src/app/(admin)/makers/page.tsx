@@ -11,7 +11,7 @@ import MakerService from "@/services/MakerService";
 import { Maker } from "@/types/maker";
 import Loading from "@/components/common/Loading";
 
- function MakerList() {
+function MakerList() {
     const {
         data: makers,
         isLoading,
@@ -48,16 +48,16 @@ import Loading from "@/components/common/Loading";
             accessorKey: "id",
             cell: (item: Maker) => (
                 <div className="flex items-center gap-2">
-                    <ButtonLink 
-                        href={`/makers/${item.id}/edit`} 
-                        variant='info' 
+                    <ButtonLink
+                        href={`/makers/${item.id}/edit`}
+                        variant='info'
                         size='xs'
                     >
                         Edit
                     </ButtonLink>
-                    <Button 
-                        onClick={() => handleDelete(Number(item.id))} 
-                        variant='danger' 
+                    <Button
+                        onClick={() => handleDelete(Number(item.id))}
+                        variant='danger'
                         size='xs'
                     >
                         Delete
@@ -72,7 +72,7 @@ import Loading from "@/components/common/Loading";
             <Breadcrumb items={[{ label: 'Dashboard', href: '/dashboard' }, { label: 'Makers', href: '/makers' }]} />
             <div className="space-y-6">
                 <div className="flex justify-end mb-4">
-                    <ButtonLink size='xs' href="/makers/create">Create Maker</ButtonLink>
+                    <ButtonLink size='sm' href="/makers/create">Create Maker</ButtonLink>
                 </div>
                 <DataTable
                     title="Maker List"

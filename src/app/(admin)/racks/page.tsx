@@ -74,7 +74,7 @@ function RackListPage() {
             <Breadcrumb items={[{ label: 'Dashboard', href: '/dashboard' }, { label: 'Racks', href: '/racks' }]} />
             <div className="space-y-6">
                 <div className="flex justify-end mb-4">
-                    <ButtonLink size='xs' href="/racks/create">Create Rack</ButtonLink>
+                    <ButtonLink size='sm' href="/racks/create">Create Rack</ButtonLink>
                 </div>
                 <DataTable
                     title="Rack List"

@@ -9,6 +9,7 @@ import { Kanban } from "@/types/kanban";
 import KanbanService from "@/services/KanbanService";
 import { Supplier } from "@/types/supplier";
 import Loading from "@/components/common/Loading";
+import { SameKanbanParents } from "@/types/sameKanbanParents";
 
 export default function Page() {
     const params = useParams();
@@ -17,25 +18,50 @@ export default function Page() {
     if (!kanban) return (
         <Loading />
     );
-
     const columns = [
-        {
-            header: "No.",
-            accessorKey: "id",
-            cell: (item: Supplier) => {
-                const suppliers = Array.isArray(kanban?.supplier) ? kanban.supplier : [kanban?.supplier];
-                const index = suppliers.findIndex((supplier: Supplier) => supplier.id === item.id) ?? 0;
-                return index + 1;
-            },
-        },
+        // {
+        //     header: "No.",
+        //     accessorKey: "id",
+        //     cell: (item: Supplier) => {
+        //         const suppliers = Array.isArray(kanban?.supplier) ? kanban.supplier : [kanban?.supplier];
+        //         const index = suppliers.findIndex((supplier: Supplier) => supplier.id === item.id) ?? 0;
+        //         return index + 1;
+        //     },
+        // },
         {
             header: "Supplier Name",
-            accessorKey: "name",
+            accessorKey: "same_kanban_parents",
             cell: (item: Supplier) => {
                 return <div>{item?.name || '-'}</div>
             },
         }
     ];
+
+
+    const columnsSameParent = [
+        {
+            header: "Kanban Code",
+            accessorKey: "same_kanban_parents.code",
+            cell: (item: SameKanbanParents) => {
+                return <div>{item.code || '-'}</div>
+            },
+        },
+        {
+            header: "Kanban Description",
+            accessorKey: "same_kanban_parents.description",
+            cell: (item: SameKanbanParents) => {
+                return <div>{item.description || '-'}</div>
+            },
+        },
+        {
+            header: "Kanban Specification",
+            accessorKey: "same_kanban_parents.specification",
+            cell: (item: SameKanbanParents) => {
+                return <div>{item.specification || '-'}</div>
+            },
+        }
+    ];
+
 
     return (
         <div className="space-y-6">
@@ -224,11 +250,20 @@ export default function Page() {
                     </div>
                 </ComponentCard>
 
-                <DataTable
-                    title="Supplier Information"
-                    columns={columns}
-                    data={kanban.supplier ? (Array.isArray(kanban.supplier) ? kanban.supplier : [kanban.supplier]) : []}
-                />
+
+                <div className="grid grid-cols-2 gap-4 items-start">
+
+                    <DataTable
+                        title="Same Parent Information "
+                        columns={columnsSameParent}
+                        data={kanban.same_kanban_parents ? (Array.isArray(kanban.same_kanban_parents) ? kanban.same_kanban_parents : [kanban.same_kanban_parents]) : []}
+                    />
+                    <DataTable
+                        title="Supplier Information "
+                        columns={columns}
+                        data={kanban.supplier ? (Array.isArray(kanban.supplier) ? kanban.supplier : [kanban.supplier]) : []}
+                    />
+                </div>
             </div>
         </div>
     );

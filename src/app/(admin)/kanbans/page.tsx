@@ -137,7 +137,7 @@ function KanbanList() {
             <div className="space-y-6">
                 <div className="flex justify-end mb-4 gap-2">
                     <KanbanExportExcel />
-                    <ButtonLink size='xs' href="/kanbans/create">Create Kanban</ButtonLink>
+                    <ButtonLink size='sm' href="/kanbans/create">Create Kanban</ButtonLink>
                 </div>
                 {/* <FilterKanban
                     filter={filter}

@@ -2,6 +2,7 @@ import { Area } from "./area";
 import { Machine } from "./machine";
 import { Maker } from "./maker";
 import { Rack } from "./rack";
+import { SameKanbanParents } from "./sameKanbanParents";
 import { Supplier } from "./supplier";
 
 export type Kanban = {
@@ -31,4 +32,5 @@ export type Kanban = {
     safety_stock: number;
     is_completed: boolean;
     incoming_order_stock?: number;
+    same_kanban_parents?: SameKanbanParents[];
 }

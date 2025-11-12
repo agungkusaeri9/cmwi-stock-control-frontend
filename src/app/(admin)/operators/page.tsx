@@ -73,7 +73,7 @@ function OperatorListContent() {
             <Breadcrumb items={[{ label: 'Dashboard', href: '/dashboard' }, { label: 'Operators', href: '/operators' }]} />
             <div className="space-y-6">
                 <div className="flex justify-end mb-4">
-                    <ButtonLink size='xs' href="/operators/create">Create Operator</ButtonLink>
+                    <ButtonLink size='sm' href="/operators/create">Create Operator</ButtonLink>
                 </div>
                 <DataTable
                     title="Operator List"

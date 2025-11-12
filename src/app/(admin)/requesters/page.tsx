@@ -84,7 +84,7 @@ function GroupList() {
             <Breadcrumb items={[{ label: 'Dashboard', href: '/dashboard' }, { label: 'Requesters', href: '/requesters' }]} />
             <div className="space-y-6">
                 <div className="flex justify-end mb-4">
-                    <ButtonLink size='xs' href="/requesters/create">Create Requester</ButtonLink>
+                    <ButtonLink size='sm' href="/requesters/create">Create Requester</ButtonLink>
                 </div>
                 <DataTable
                     title="Requester List"

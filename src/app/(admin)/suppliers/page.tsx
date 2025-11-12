@@ -48,16 +48,16 @@ function SupplierList() {
             accessorKey: "id",
             cell: (item: Supplier) => (
                 <div className="flex items-center gap-2">
-                    <ButtonLink 
-                        href={`/suppliers/${item.id}/edit`} 
-                        variant='info' 
+                    <ButtonLink
+                        href={`/suppliers/${item.id}/edit`}
+                        variant='info'
                         size='xs'
                     >
                         Edit
                     </ButtonLink>
-                    <Button 
-                        onClick={() => handleDelete(Number(item.id))} 
-                        variant='danger' 
+                    <Button
+                        onClick={() => handleDelete(Number(item.id))}
+                        variant='danger'
                         size='xs'
                     >
                         Delete
@@ -72,7 +72,7 @@ function SupplierList() {
             <Breadcrumb items={[{ label: 'Dashboard', href: '/dashboard' }, { label: 'Suppliers', href: '/suppliers' }]} />
             <div className="space-y-6">
                 <div className="flex justify-end mb-4">
-                    <ButtonLink size='xs' href="/suppliers/create">Create Supplier</ButtonLink>
+                    <ButtonLink size='sm' href="/suppliers/create">Create Supplier</ButtonLink>
                 </div>
                 <DataTable
                     title="Supplier List"
