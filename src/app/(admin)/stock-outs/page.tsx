@@ -34,13 +34,16 @@ function StockOutList() {
         {
             header: 'Date',
             accessorKey: 'po_date',
-            cell: (item: StockOut) => dateFormat(item.created_at)
+            cell: (item: StockOut) => dateFormat(item.created_at),
+            isNoWrap: true
         },
         {
+            isNoWrap: true,
             header: "Code",
             accessorKey: "kanban_code"
         },
         {
+            isNoWrap: true,
             header: "Rack",
             accessorKey: "rack",
             cell: (item: StockOut) => item.kanban?.rack?.code

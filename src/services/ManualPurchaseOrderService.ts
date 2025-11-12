@@ -37,7 +37,7 @@ const get: FetchFunctionWithPagination<PurchaseOrder> = async (
   if (pr_number)  params.pr_number = pr_number;
   if (po_number)  params.po_number = po_number;
   if (end_date) params.end_date = end_date;
-  if (kanban) params.kanban_code = kanban;
+  if (kanban) params.kanban = kanban;
   if (keyword) params.keyword = keyword;
   const response = await api.get<PaginatedResponse<PurchaseOrder>>("manual-purchase-orders", { params });
   return response.data;
