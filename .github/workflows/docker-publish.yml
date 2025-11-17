@@ -2,10 +2,8 @@ name: Build & Push Docker images
 
 on:
   push:
-    tags:
-      - "*"        # jalan ketika git tag dipush
     branches:
-      - main       # opsional, kalau mau build juga di main
+      - main   # jalan setiap ada push ke main
 
 jobs:
   build-and-push:
@@ -24,28 +22,28 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Extract tag
-        id: extract_tag
-        run: echo "TAG=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
-
-      # ==== IMAGE 1 ====
-      - name: Build & Push Image 1
+      # =============================
+      # IMAGE 1
+      # =============================
+      - name: Build & Push Image 1 (v2.0.1)
         uses: docker/build-push-action@v4
         with:
           context: .
           push: true
-          tags: agungkusaeri/stock-control:${{ steps.extract_tag.outputs.TAG }}
+          tags: agungkusaeri/stock-control:v2.0.1
           build-args: |
             NEXT_PUBLIC_API_BASE_URL=http://192.168.245.156:3210/api
             NEXT_PUBLIC_SOCKET_BASE_URL=ws://192.168.245.156:3001
 
-      # ==== IMAGE 2 ====
-      - name: Build & Push Image 2
+      # =============================
+      # IMAGE 2
+      # =============================
+      - name: Build & Push Image 2 (v2.0.1-2)
         uses: docker/build-push-action@v4
         with:
           context: .
           push: true
-          tags: agungkusaeri/stock-control:${{ steps.extract_tag.outputs.TAG }}-2
+          tags: agungkusaeri/stock-control:v2.0.1-2
           build-args: |
             NEXT_PUBLIC_API_BASE_URL=http://192.168.205.170:3210/api
             NEXT_PUBLIC_SOCKET_BASE_URL=ws://192.168.205.170:3001
