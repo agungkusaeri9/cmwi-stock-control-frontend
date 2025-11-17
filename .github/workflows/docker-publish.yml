@@ -2,35 +2,10 @@ name: Build & Push Docker images
 
 on:
   push:
-    branches: ["main"]
-
-  workflow_dispatch:
-    inputs:
-      image_tag_1:
-        description: "Tag untuk image #1 (ex: v2.0.1)"
-        required: true
-        default: "v2.0.1"
-      api_url_1:
-        description: "API base URL image #1"
-        required: true
-        default: "http://192.168.245.156:3210/api"
-      socket_url_1:
-        description: "Socket URL image #1"
-        required: true
-        default: "ws://192.168.245.156:3001"
-
-      image_tag_2:
-        description: "Tag untuk image #2 (ex: v2.0.1-2)"
-        required: true
-        default: "v2.0.1-2"
-      api_url_2:
-        description: "API base URL image #2"
-        required: true
-        default: "http://192.168.205.170:3210/api"
-      socket_url_2:
-        description: "Socket URL image #2"
-        required: true
-        default: "ws://192.168.205.170:3001"
+    tags:
+      - "*"        # jalan ketika git tag dipush
+    branches:
+      - main       # opsional, kalau mau build juga di main
 
 jobs:
   build-and-push:
@@ -49,16 +24,20 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      - name: Extract tag
+        id: extract_tag
+        run: echo "TAG=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+
       # ==== IMAGE 1 ====
       - name: Build & Push Image 1
         uses: docker/build-push-action@v4
         with:
           context: .
           push: true
-          tags: agungkusaeri/stock-control:${{ inputs.image_tag_1 }}
+          tags: agungkusaeri/stock-control:${{ steps.extract_tag.outputs.TAG }}
           build-args: |
-            NEXT_PUBLIC_API_BASE_URL=${{ inputs.api_url_1 }}
-            NEXT_PUBLIC_SOCKET_BASE_URL=${{ inputs.socket_url_1 }}
+            NEXT_PUBLIC_API_BASE_URL=http://192.168.245.156:3210/api
+            NEXT_PUBLIC_SOCKET_BASE_URL=ws://192.168.245.156:3001
 
       # ==== IMAGE 2 ====
       - name: Build & Push Image 2
@@ -66,7 +45,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: agungkusaeri/stock-control:${{ inputs.image_tag_2 }}
+          tags: agungkusaeri/stock-control:${{ steps.extract_tag.outputs.TAG }}-2
           build-args: |
-            NEXT_PUBLIC_API_BASE_URL=${{ inputs.api_url_2 }}
-            NEXT_PUBLIC_SOCKET_BASE_URL=${{ inputs.socket_url_2 }}
+            NEXT_PUBLIC_API_BASE_URL=http://192.168.205.170:3210/api
+            NEXT_PUBLIC_SOCKET_BASE_URL=ws://192.168.205.170:3001
