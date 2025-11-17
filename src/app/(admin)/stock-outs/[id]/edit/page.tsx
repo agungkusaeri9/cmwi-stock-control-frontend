@@ -52,6 +52,10 @@ export default function EditRack() {
         updateMutation(data as StockOut);
     };
 
+    if (isLoading) {
+        return <div>Loading...</div>;
+    }
+
     return (
         <div>
             <Breadcrumb
@@ -70,6 +74,7 @@ export default function EditRack() {
                                 name="date"
                                 type="text"
                                 disabled
+                                required
                                 defaultValue={dateFormat(stockOut?.created_at || '')}
                             />
                             <InputLabel

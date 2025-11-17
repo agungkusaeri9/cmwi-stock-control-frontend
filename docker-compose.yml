@@ -10,9 +10,7 @@ services:
 
 networks:
   cmwi-stock-control-default:
-    driver: bridge 
-
-
+    driver: bridge
 
 #  docker build -t agungkusaeri/cmwi-fst:v2.0.0 --build-arg NEXT_PUBLIC_API_BASE_URL=http://192.168.245.156:3210/api --build-arg NEXT_PUBLIC_SOCKET_BASE_URL=ws://192.168.245.156:3001 .
 # docker push agungkusaeri/cmwi-fst:v2.0.0

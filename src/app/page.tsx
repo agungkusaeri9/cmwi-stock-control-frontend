@@ -1,13 +1,6 @@
-import React, { Suspense } from 'react'
-import SignInForm from '@/components/auth/SignInForm'
-import Loading from '@/components/common/Loading'
+// app/page.tsx
+import { redirect } from "next/navigation";
 
-const LoginPage = () => {
-    return (
-        <Suspense fallback={<Loading />}>
-            <SignInForm />
-        </Suspense>
-    )
+export default function Page() {
+    redirect("/auth/signin");
 }
-
-export default LoginPage

@@ -11,6 +11,7 @@ import { useFetchData } from '@/hooks/useFetchData';
 import KanbanService from '@/services/KanbanService';
 import ManualPurchaseOrderService from '@/services/ManualPurchaseOrderService';
 import { Kanban } from '@/types/kanban';
+import { confirm } from '@/utils/confirm';
 import { createManualPurchaseOrderSchema } from '@/validators/manualPurchaseOrderValidator';
 import { zodResolver } from '@hookform/resolvers/zod';
 import React from 'react'
@@ -28,7 +29,15 @@ const CreateManualPurchaseOrderPage = () => {
     const { register, handleSubmit, setValue, watch, control, formState: { errors }, reset } = useForm({
         resolver: zodResolver(createManualPurchaseOrderSchema),
     });
-    const onSubmit = (data: formData) => {
+    const onSubmit = async (data: formData) => {
+        const ok = await confirm(
+            "Are you sure?",
+            "This action cannot be undone.",
+            "Yes, Create Now!"
+        );
+
+        if (!ok) return;
+
         const payload = {
             ...data,
             kanban_code: data.kanban_code?.value || null

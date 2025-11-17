@@ -39,6 +39,7 @@ function OperatorListContent() {
         {
             header: "Username",
             accessorKey: "username",
+            cell: (item: Operator) => item?.username || '-'
         },
         {
             header: "Name",

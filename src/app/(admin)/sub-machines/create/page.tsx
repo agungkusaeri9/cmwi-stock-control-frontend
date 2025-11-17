@@ -71,7 +71,7 @@ export default function CreateArea() {
                 items={[
                     { label: 'Dashboard', href: '/dashboard' },
                     { label: 'Machines', href: '/machines' },
-                    { label: 'Sub Machines', href: `sub-machines?machineId=${machineId}` },
+                    { label: 'Sub Machines', href: `/sub-machines?machineId=${machineId}` },
                     { label: 'Create' }
                 ]}
             />

@@ -60,7 +60,7 @@ export default function Page() {
                 items={[
                     { label: 'Dashboard', href: '/dashboard' },
                     { label: 'Machines', href: '/machines' },
-                    { label: 'Sub Machines', href: '/sub-machines' },
+                    { label: 'Sub Machines', href: `/sub-machines?machineId=${subMachine?.machine.id}` },
                     { label: 'Edit' }
                 ]}
             />

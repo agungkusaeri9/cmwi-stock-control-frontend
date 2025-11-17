@@ -15,8 +15,8 @@ import { loginValidation } from "@/validators/auth/login";
 import InputLabel from "../form/FormInput";
 import { z } from "zod";
 import Loading from "../common/Loading";
-import showToast from "@/utils/showToast";
 import { AxiosError } from "axios";
+import handleError from "@/utils/handleErrors";
 
 type LoginFormData = z.infer<typeof loginValidation>;
 
@@ -44,7 +44,9 @@ export default function SignInForm() {
       router.push(callbackUrl);
     },
     onError: (error: AxiosError) => {
-      showToast(error.message ?? 'Terjadi kesalahan');
+      // console.log(error?.response?.data?.message ?? error.message);
+      // showToast(error.message ?? 'Terjadi kesalahan');
+      handleError(error);
     }
 
   });
