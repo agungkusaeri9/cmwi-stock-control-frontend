@@ -12,6 +12,7 @@ export function SearchInput({ value, onChange, placeholder }: SearchInputProps) 
 
     // debounce biar ga spam request
     React.useEffect(() => {
+
         const handler = setTimeout(() => {
             onChange(internalValue);
         }, 500); // 500ms debounce

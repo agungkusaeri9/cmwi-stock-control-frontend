@@ -39,7 +39,11 @@ export const useFetchData = <T,>(
         const newParams = new URLSearchParams(searchParams.toString());
         newParams.set("limit", limit.toString());
         newParams.set("page", currentPage.toString());
-        if (keyword) newParams.set("keyword", keyword);
+        if (keyword) {
+            newParams.set("keyword", keyword)
+        } else {
+            newParams.delete("keyword")
+        }
         router.push(`?${newParams.toString()}`, { scroll: false });
     }, [keyword, currentPage, limit, router, searchParams, usePagination]);
 

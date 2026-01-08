@@ -1,6 +1,6 @@
 "use client"
 import React, { useState } from "react";
-import { ChevronDown, ChevronUp, ChevronsUpDown } from "lucide-react";
+import { ChevronDown, ChevronUp, ChevronsUpDown, X } from "lucide-react";
 import ComponentCard from "./ComponentCard";
 import SkeletonTable from './SkeletonTable';
 
@@ -50,8 +50,14 @@ export default function DataTable({
     expandable
 }: DataTableProps) {
 
+
     const [expandedRows, setExpandedRows] = useState<number[]>([]);
     const [sortConfig, setSortConfig] = useState<{ key: string; direction: 'asc' | 'desc' } | null>(null);
+    const [internalSearch, setInternalSearch] = useState(search?.value || "");
+
+    React.useEffect(() => {
+        setInternalSearch(search?.value || "");
+    }, [search?.value]);
 
     const toggleRow = (index: number) => {
         setExpandedRows(prev =>
@@ -110,13 +116,31 @@ export default function DataTable({
                             </div>
                         )}
                         {search && (
-                            <input
-                                type="text"
-                                placeholder={search.placeholder || "Search..."}
-                                className="h-9 rounded border border-gray-300 p-2 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
-                                value={search.value}
-                                onChange={(e) => search.onChange(e.target.value)}
-                            />
+                            <div className="relative">
+                                <input
+                                    type="text"
+                                    placeholder={search.placeholder || "Search..."}
+                                    className="h-9 rounded border border-gray-300 p-2 pr-8 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
+                                    value={internalSearch}
+                                    onChange={(e) => setInternalSearch(e.target.value)}
+                                    onKeyDown={(e) => {
+                                        if (e.key === "Enter") {
+                                            search.onChange(internalSearch);
+                                        }
+                                    }}
+                                />
+                                {internalSearch && (
+                                    <button
+                                        onClick={() => {
+                                            setInternalSearch("");
+                                            search.onChange("");
+                                        }}
+                                        className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                                    >
+                                        <X size={16} />
+                                    </button>
+                                )}
+                            </div>
                         )}
                     </div>
                     <div className="overflow-hidden rounded-md border border-gray-200 bg-white dark:border-white/[0.05] dark:bg-white/[0.03]">
