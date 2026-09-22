@@ -21,8 +21,9 @@ ENV NEXT_PUBLIC_SOCKET_BASE_URL=$NEXT_PUBLIC_SOCKET_BASE_URL
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-# Disable telemetry
+# Disable telemetry and optimize build memory
 ENV NEXT_TELEMETRY_DISABLED 1
+ENV NODE_OPTIONS="--max-old-space-size=2048"
 
 # Build project
 RUN npm run build
