@@ -4,7 +4,7 @@ WORKDIR /app
 
 # Install dependencies
 COPY package.json package-lock.json* ./
-RUN npm ci --force
+RUN npm install --legacy-peer-deps
 
 
 # Stage 2: Builder
