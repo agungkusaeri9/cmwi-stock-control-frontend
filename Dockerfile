@@ -1,6 +1,5 @@
 # Stage 1: Dependencies
-FROM node:20-alpine AS deps
-RUN apk add --no-cache libc6-compat
+FROM node:20-slim AS deps
 WORKDIR /app
 
 # Install dependencies
@@ -9,8 +8,7 @@ RUN npm install --legacy-peer-deps
 
 
 # Stage 2: Builder
-FROM node:20-alpine AS builder
-RUN apk add --no-cache libc6-compat
+FROM node:20-slim AS builder
 WORKDIR /app
 
 # ARG + ENV Harus Ada Di Sini!
@@ -31,15 +29,15 @@ RUN npm run build
 
 
 # Stage 3: Runner
-FROM node:20-alpine AS runner
+FROM node:20-slim AS runner
 WORKDIR /app
 
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 
 # Create non-root user
-RUN addgroup --system --gid 1001 nodejs && \
-    adduser --system --uid 1001 nextjs
+RUN groupadd --system --gid 1001 nodejs && \
+    useradd --system --uid 1001 nextjs
 
 # Copy necessary files from builder
 COPY --from=builder /app/public ./public
