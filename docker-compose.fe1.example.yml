@@ -1,0 +1,21 @@
+version: "3.9"
+
+services:
+  frontend-1:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_API_BASE_URL: ${NEXT_PUBLIC_API_BASE_URL:-http://localhost:3210/api}
+        NEXT_PUBLIC_SOCKET_BASE_URL: ${NEXT_PUBLIC_SOCKET_BASE_URL:-ws://localhost:3001}
+    container_name: app-frontend-1
+    ports:
+      - "${PORT:-3000}:3000"
+    networks:
+      - cmwi-network
+    restart: unless-stopped
+
+networks:
+  cmwi-network:
+    name: cmwi-network
+    external: true
