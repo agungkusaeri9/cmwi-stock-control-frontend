@@ -26,7 +26,7 @@ export default function SignInForm() {
   const [isChecked, setIsChecked] = useState(false);
   const callbackUrl = searchParams.get("callbackUrl") || "/dashboard";
 
-  const { mutate: loginMutation, isPending: loading, isSuccess } = useMutation({
+  const { mutate: loginMutation, isPending: loading } = useMutation({
     mutationFn: async (data: LoginFormData) => {
       const response = await AuthService.login(data);
       const role = response.data.data.role;
