@@ -12,6 +12,7 @@ type Filter = {
     status: string | null;
     completed_status?: string | null;
     js_balance_status: string;
+    processed_status?: string | null;
 };
 
 export type FetchFunctionWithPagination<T> = (
@@ -23,7 +24,8 @@ export type FetchFunctionWithPagination<T> = (
     rack_id?: number | null,
     status?: string | null,
     completed_status?: string | null,
-    js_balance_status?: string
+    js_balance_status?: string,
+    processed_status?: string | null
 ) => Promise<PaginatedResponse<T>>;
 
 export const useFetchDataBalance = <T>(
@@ -80,6 +82,9 @@ export const useFetchDataBalance = <T>(
         if (filter.js_balance_status) newParams.set("js_balance_status", filter.js_balance_status);
         else newParams.delete("js_balance_status");
 
+        if (filter.processed_status) newParams.set("processed_status", filter.processed_status);
+        else newParams.delete("processed_status");
+
         router.push(`?${newParams.toString()}`, { scroll: false });
     }, [filter, currentPage, limit, usePagination, router, searchParams]);
 
@@ -93,7 +98,8 @@ export const useFetchDataBalance = <T>(
             filter.rack_id,
             filter.status,
             filter.completed_status ?? null,
-            filter.js_balance_status
+            filter.js_balance_status,
+            filter.processed_status ?? null
         );
         setPagination(res.pagination);
         return res.data;
@@ -112,6 +118,7 @@ export const useFetchDataBalance = <T>(
                   filter.status,
                   filter.completed_status ?? null,
                   filter.js_balance_status,
+                  filter.processed_status ?? null,
               ]
             : [queryKey],
         queryFn: fetchData,

@@ -22,26 +22,22 @@ interface FilterFormData {
     js_balance_status: string;
 }
 
+export interface BalanceFilter {
+    machine_id: number | null;
+    machine_area_id: number | null;
+    rack_id: number | null;
+    keyword: string;
+    status: string | null;
+    js_balance_status: string;
+    processed_status: string | null;
+}
+
 const FilterBalance = ({
     filter,
     setFilter
 }: {
-    filter: {
-        machine_id: number | null,
-        machine_area_id: number | null,
-        rack_id: number | null,
-        keyword: string,
-        status: string | null,
-        js_balance_status: string
-    },
-    setFilter: (filter: {
-        machine_id: number | null,
-        machine_area_id: number | null,
-        rack_id: number | null,
-        keyword: string,
-        status: string | null,
-        js_balance_status: string
-    }) => void
+    filter: BalanceFilter;
+    setFilter: React.Dispatch<React.SetStateAction<BalanceFilter>> | ((filter: BalanceFilter) => void);
 }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [activeFilters, setActiveFilters] = useState(0);
@@ -83,6 +79,30 @@ const FilterBalance = ({
         setActiveFilters(count);
     }, [formValues]);
 
+    useEffect(() => {
+        setValue("keyword", filter.keyword);
+        setValue("status", filter.status);
+        setValue("js_balance_status", filter.js_balance_status);
+        if (filter.machine_id && machines) {
+            const m = machines.find((d: Machine) => d.id === filter.machine_id);
+            setValue("machine_id", m ? { value: m.id, label: m.code } : null);
+        } else if (!filter.machine_id) {
+            setValue("machine_id", null);
+        }
+        if (filter.machine_area_id && machineAreas) {
+            const a = machineAreas.find((d: Area) => d.id === filter.machine_area_id);
+            setValue("machine_area_id", a ? { value: a.id, label: a.name || "" } : null);
+        } else if (!filter.machine_area_id) {
+            setValue("machine_area_id", null);
+        }
+        if (filter.rack_id && racks) {
+            const r = racks.find((d: Rack) => d.id === filter.rack_id);
+            setValue("rack_id", r ? { value: r.id, label: r.code } : null);
+        } else if (!filter.rack_id) {
+            setValue("rack_id", null);
+        }
+    }, [filter, machines, machineAreas, racks, setValue]);
+
     const onSubmit = (data: FilterFormData) => {
         setFilter({
             machine_id: data.machine_id?.value || null,
@@ -90,7 +110,8 @@ const FilterBalance = ({
             rack_id: data.rack_id?.value || null,
             keyword: data.keyword,
             status: data.status,
-            js_balance_status: data.js_balance_status
+            js_balance_status: data.js_balance_status,
+            processed_status: filter.processed_status || null
         });
         setIsOpen(false);
     };
@@ -103,13 +124,16 @@ const FilterBalance = ({
             rack_id: null,
             keyword: "",
             status: null,
-            js_balance_status: filter.js_balance_status
+            js_balance_status: "",
+            processed_status: null
         });
         setIsOpen(false);
     };
 
-    const removeFilter = (type: keyof FilterFormData) => {
-        setValue(type, type === 'keyword' ? '' : null);
+    const removeFilter = (type: keyof FilterFormData | 'processed_status') => {
+        if (type in formValues) {
+            setValue(type as keyof FilterFormData, type === 'keyword' ? '' : null);
+        }
         setFilter({
             ...filter,
             [type]: type === 'keyword' ? '' : null,
@@ -120,6 +144,18 @@ const FilterBalance = ({
         <div className="relative">
             <div className="flex items-center gap-2">
                 {/* Active Filter Chips */}
+
+                {filter.processed_status && (
+                    <div className="flex items-center gap-1 px-2 py-1 text-xs bg-blue-50 text-blue-700 border border-blue-200 rounded-full dark:bg-blue-900/30 dark:text-blue-400 dark:border-blue-800">
+                        <span className="capitalize">Status: {filter.processed_status}</span>
+                        <button
+                            onClick={() => removeFilter('processed_status')}
+                            className="text-blue-500 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-200"
+                        >
+                            ×
+                        </button>
+                    </div>
+                )}
 
                 {filter.machine_area_id && machineAreas && (
                     <div className="flex items-center gap-1 px-2 py-1 text-xs bg-gray-100 rounded-full dark:bg-gray-800">

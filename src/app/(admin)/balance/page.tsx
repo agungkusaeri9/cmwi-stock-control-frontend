@@ -1,5 +1,6 @@
 "use client";
-import React, { Suspense, useState } from "react";
+import React, { Suspense, useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import Breadcrumb from "@/components/common/Breadcrumb";
 import KanbanService from "@/services/KanbanService";
 import { Kanban } from "@/types/kanban";
@@ -10,14 +11,49 @@ import { useFetchDataBalance } from "@/hooks/useFetchDataBalance";
 import ExportBalance from "@/components/pages/balance/exportBalance";
 
 function BalanceList() {
+    const searchParams = useSearchParams();
     const [filter, setFilter] = useState({
-        machine_id: null as number | null,
-        machine_area_id: null as number | null,
-        rack_id: null as number | null,
-        keyword: "",
-        status: null as string | null,
-        js_balance_status: ""
+        machine_id: searchParams.get("machine_id") ? Number(searchParams.get("machine_id")) : null,
+        machine_area_id: searchParams.get("machine_area_id") ? Number(searchParams.get("machine_area_id")) : null,
+        rack_id: searchParams.get("rack_id") ? Number(searchParams.get("rack_id")) : null,
+        keyword: searchParams.get("keyword") || "",
+        status: searchParams.get("status") || null,
+        js_balance_status: searchParams.get("js_balance_status") || "",
+        processed_status: searchParams.get("processed_status") || null
     });
+
+    useEffect(() => {
+        const paramMachineId = searchParams.get("machine_id") ? Number(searchParams.get("machine_id")) : null;
+        const paramMachineAreaId = searchParams.get("machine_area_id") ? Number(searchParams.get("machine_area_id")) : null;
+        const paramRackId = searchParams.get("rack_id") ? Number(searchParams.get("rack_id")) : null;
+        const paramKeyword = searchParams.get("keyword") || "";
+        const paramStatus = searchParams.get("status") || null;
+        const paramJsBalanceStatus = searchParams.get("js_balance_status") || "";
+        const paramProcessedStatus = searchParams.get("processed_status") || null;
+
+        setFilter((prev) => {
+            if (
+                prev.machine_id === paramMachineId &&
+                prev.machine_area_id === paramMachineAreaId &&
+                prev.rack_id === paramRackId &&
+                prev.keyword === paramKeyword &&
+                prev.status === paramStatus &&
+                prev.js_balance_status === paramJsBalanceStatus &&
+                prev.processed_status === paramProcessedStatus
+            ) {
+                return prev;
+            }
+            return {
+                machine_id: paramMachineId,
+                machine_area_id: paramMachineAreaId,
+                rack_id: paramRackId,
+                keyword: paramKeyword,
+                status: paramStatus,
+                js_balance_status: paramJsBalanceStatus,
+                processed_status: paramProcessedStatus,
+            };
+        });
+    }, [searchParams]);
     const {
         data: kanbans,
         isLoading,

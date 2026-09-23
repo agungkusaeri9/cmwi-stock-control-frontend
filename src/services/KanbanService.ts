@@ -29,6 +29,7 @@ type FilterExportBalance = {
   keyword: string;
   status: string | null;
   js_balance_status: string;
+  processed_status?: string | null;
 };
 
 const get: FetchFunctionWithPagination<Kanban> = async (
@@ -40,7 +41,8 @@ const get: FetchFunctionWithPagination<Kanban> = async (
   rack_id = null,
   status = null,
   completed_status = null,
-  js_balance_status = null
+  js_balance_status = null,
+  processed_status = null
 ): Promise<PaginatedResponse<Kanban>> => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const params: any = {
@@ -54,8 +56,9 @@ const get: FetchFunctionWithPagination<Kanban> = async (
   if(rack_id) params.rack_id = rack_id;
   if(keyword) params.keyword = keyword;
   if(status) params.stock_status = status;
-  if(completed_status) params.completed_status = completed_status ;
-  if(js_balance_status) params.js_balance_status = js_balance_status ;
+  if(completed_status) params.completed_status = completed_status;
+  if(js_balance_status) params.js_balance_status = js_balance_status;
+  if(processed_status) params.processed_status = processed_status;
 
   const response = await api.get<PaginatedResponse<Kanban>>("kanbans", {params});
   return response.data;
@@ -171,6 +174,7 @@ const exportBalance = async ({filter} : {filter: FilterExportBalance}) => {
       keyword,
       status,
       js_balance_status,
+      processed_status,
     } = filter;
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const params: any = {};
@@ -181,6 +185,7 @@ const exportBalance = async ({filter} : {filter: FilterExportBalance}) => {
     if (keyword) params.keyword = keyword;
     if (status) params.stock_status = status;
     if (js_balance_status) params.js_balance_status = js_balance_status;
+    if (processed_status) params.processed_status = processed_status;
 
 
     const response = await api.get("/kanbans/export/excel/balance",{

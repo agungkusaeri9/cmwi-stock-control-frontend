@@ -14,7 +14,7 @@ function PoList() {
     const [filter, setFilter] = useState({
         start_date: '',
         end_date: '',
-        kanban: ''
+        keyword: ''
     });
 
     const {
