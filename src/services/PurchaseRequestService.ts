@@ -35,7 +35,6 @@ const get: FetchFunctionWithPagination<PurchaseRequest> = async (
   keyword?: string,
   start_date?: string,
   end_date?: string,
-  kanban?: string,
 ): Promise<PaginatedResponse<PurchaseRequest>> => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const params: any = {
@@ -43,11 +42,9 @@ const get: FetchFunctionWithPagination<PurchaseRequest> = async (
     limit,
     paginate: true,
   };
-  
 
-  if (start_date)  params.start_date = start_date;
+  if (start_date) params.start_date = start_date;
   if (end_date) params.end_date = end_date;
-  if (kanban) params.keyword = kanban;
   if (keyword) params.keyword = keyword;
 
   const response = await api.get<PaginatedResponse<PurchaseRequest>>("purchase-requests", { params });

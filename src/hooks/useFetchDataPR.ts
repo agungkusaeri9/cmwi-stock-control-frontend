@@ -7,14 +7,13 @@ import { PaginatedResponse } from "@/types/fetch";
 type Filter = {
     start_date: string;
     end_date: string;
-    kanban: string;
+    keyword: string;
 }
 
 export type FetchFunctionWithPagination<T> = (
     page?: number,
     limit?: number,
     keyword?: string,
-    kanban?: string,
     start_date?: string,
     end_date?: string,
 ) => Promise<PaginatedResponse<T>>;
@@ -54,8 +53,9 @@ export const useFetchDataPR = <T>(
         newParams.set("limit", limit.toString());
         newParams.set("page", currentPage.toString());
 
-        if (keyword) {
-            newParams.set("keyword", keyword);
+        const activeKeyword = filter.keyword || keyword;
+        if (activeKeyword) {
+            newParams.set("keyword", activeKeyword);
         } else {
             newParams.delete("keyword");
         }
@@ -72,12 +72,6 @@ export const useFetchDataPR = <T>(
             newParams.delete("end_date");
         }
 
-        if (filter.kanban) {
-            newParams.set("kanban", filter.kanban);
-        } else {
-            newParams.delete("kanban");
-        }
-
         router.push(`?${newParams.toString()}`, { scroll: false });
     }, [keyword, currentPage, limit, filter, usePagination, router, searchParams]);
 
@@ -85,10 +79,9 @@ export const useFetchDataPR = <T>(
         const res = await fetchFunction(
             currentPage,
             limit,
-            debouncedSearch,
+            filter.keyword || debouncedSearch,
             filter.start_date,
-            filter.end_date,
-            filter.kanban
+            filter.end_date
         );
         setPagination(res.pagination);
         return res.data;
@@ -96,7 +89,7 @@ export const useFetchDataPR = <T>(
 
     const { data, isLoading, refetch } = useQuery<T[]>({
         queryKey: usePagination
-            ? [queryKey, currentPage, limit, debouncedSearch, filter.start_date, filter.end_date, filter.kanban]
+            ? [queryKey, currentPage, limit, debouncedSearch, filter.start_date, filter.end_date, filter.keyword]
             : [queryKey],
         queryFn: fetchData,
     });
